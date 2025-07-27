@@ -21,6 +21,7 @@ db.init_app(app)
 # Ruta principal
 # ---------------------------
 @app.route("/")
+@login_required
 def index():
     return redirect(url_for("login"))
 
@@ -64,6 +65,7 @@ def register():
 # Panel principal (dashboard)
 # ---------------------------
 @app.route("/dashboard")
+@login_required
 def dashboard():
     productos = Producto.query.all()
 
@@ -102,6 +104,7 @@ def dashboard():
 # Agregar nuevo producto
 # ---------------------------
 @app.route("/agregar", methods=["GET", "POST"])
+@login_required
 def agregar_producto():
     if request.method == "POST":
         nombre = request.form["nombre"]
@@ -121,6 +124,7 @@ def agregar_producto():
 # Predicción de demanda
 # ---------------------------
 @app.route("/prediccion")
+@login_required
 def prediccion():
     hoy = datetime.utcnow()
     hace_7_dias = hoy - timedelta(days=7)
@@ -147,6 +151,7 @@ def prediccion():
 # Registro de movimientos
 # ---------------------------
 @app.route("/movimientos", methods=["GET", "POST"])
+@login_required
 def movimientos():
     productos = Producto.query.all()
 
