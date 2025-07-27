@@ -43,7 +43,13 @@
           {% endif %}
         </td>
         <td class="px-3 py-2">{{ m.cantidad }}</td>
-        <td class="px-3 py-2">{{ m.fecha.strftime('%d/%m/%Y %H:%M') }}</td>
+        <td class="px-3 py-2">
+  {% if m.fecha %}
+    {{ m.fecha.strftime('%d/%m/%Y %H:%M') }}
+  {% else %}
+    Sin fecha
+  {% endif %}
+</td>
       </tr>
       {% endfor %}
     </tbody>
