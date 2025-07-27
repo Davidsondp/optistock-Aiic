@@ -4,3 +4,4 @@ psycopg2-binary
 Werkzeug
 gunicorn
 python-dotenv
+openai>=1.0.0
