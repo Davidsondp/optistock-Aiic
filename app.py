@@ -9,6 +9,9 @@ from auth import login_required
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "clave_segura_predeterminada")
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SECURE'] = True  # solo si usas HTTPS
+app.config['SESSION_PERMANENT'] = False
 
 # Configuración segura de base de datos
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///local.db")  # fallback para desarrollo local
