@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="text-center">
+    <h1 class="text-5xl font-bold text-red-500 mb-4">404</h1>
+    <p class="text-lg text-gray-700 mb-6">La página que buscas no existe.</p>
+    <a href="{{ url_for('dashboard') }}" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Volver al Panel</a>
+  </div>
+</div>
+{% endblock %}

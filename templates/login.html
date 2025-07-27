@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-300 px-4">
+  <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md animate-fade-in">
+    <h2 class="text-2xl font-semibold text-center text-indigo-600 mb-6">🔐 Iniciar sesión</h2>
+
+    <form method="POST" action="{{ url_for('login') }}" class="space-y-5">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+        <input type="email" name="email" required placeholder="correo@empresa.com"
+               class="w-full border border-gray-300 px-4 py-2 rounded focus:ring-indigo-400 focus:outline-none" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Contraseña</label>
+        <input type="password" name="password" required placeholder="••••••••"
+               class="w-full border border-gray-300 px-4 py-2 rounded focus:ring-indigo-400 focus:outline-none" />
+      </div>
+
+      <button type="submit"
+              class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded transition">
+        Entrar
+      </button>
+    </form>
+
+    <p class="text-sm text-center mt-4 text-gray-600">¿No tienes cuenta?
+      <a href="{{ url_for('register') }}" class="text-indigo-600 font-semibold hover:underline">Regístrate</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+
+

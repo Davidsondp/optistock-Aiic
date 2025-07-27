@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mx-auto p-4">
+
+  <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">📊 Panel de Inventario</h1>
+
+  <!-- Métricas resumen -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <div class="bg-white p-4 shadow rounded-xl border-t-4 border-blue-500">
+      <h2 class="text-lg font-semibold text-gray-700">Total Productos</h2>
+      <p class="text-2xl font-bold text-blue-600">{{ productos|length }}</p>
+    </div>
+    <div class="bg-white p-4 shadow rounded-xl border-t-4 border-green-500">
+      <h2 class="text-lg font-semibold text-gray-700">Stock Total</h2>
+      <p class="text-2xl font-bold text-green-600">
+        {{ productos | sum(attribute='cantidad') }}
+      </p>
+    </div>
+    <div class="bg-white p-4 shadow rounded-xl border-t-4 border-yellow-500">
+      <h2 class="text-lg font-semibold text-gray-700">Alertas activas</h2>
+      <p class="text-2xl font-bold text-yellow-600">
+        {{ productos | selectattr('cantidad', 'lt', 5) | list | length }}
+      </p>
+    </div>
+  </div>
+
+  <!-- 🔔 Alertas -->
+  {% if alertas %}
+  <div class="mb-6">
+    <h3 class="text-lg font-semibold mb-2 text-red-700">⚠ Alertas de Inventario</h3>
+    <ul class="space-y-1">
+      {% for alerta in alertas %}
+        <li class="p-2 rounded {{ 'bg-red-100 text-red-700' if alerta.tipo == 'bajo' else 'bg-yellow-100 text-yellow-800' }}">
+          {{ alerta.nombre }} - {{ 'Muy bajo' if alerta.tipo == 'bajo' else 'Posible sobrestock' }} ({{ alerta.cantidad }} unidades)
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <!-- 📈 Gráfico -->
+  <div class="bg-white shadow rounded p-4 mb-8">
+    <h3 class="text-lg font-semibold mb-3">📦 Inventario actual</h3>
+    <canvas id="graficoStock" height="100"></canvas>
+  </div>
+
+  <!-- 📋 Tabla de productos -->
+  <div class="bg-white shadow-md rounded-xl p-6 mb-6">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold text-gray-800">📋 Lista de productos</h2>
+      <a href="{{ url_for('agregar_producto') }}" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">+ Agregar</a>
+    </div>
+    <table class="min-w-full table-auto text-sm">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2 text-left text-gray-600">Producto</th>
+          <th class="px-4 py-2 text-left text-gray-600">Cantidad</th>
+          <th class="px-4 py-2 text-left text-gray-600">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in productos %}
+        <tr class="border-b">
+          <td class="px-4 py-2">{{ p.nombre }}</td>
+          <td class="px-4 py-2">{{ p.cantidad }}</td>
+          <td class="px-4 py-2">
+            {% if p.cantidad < 5 %}
+              <span class="text-red-600 font-medium">🛑 Bajo stock</span>
+            {% elif p.cantidad > 100 %}
+              <span class="text-yellow-600 font-medium">⚠️ Sobre stock</span>
+            {% else %}
+              <span class="text-green-600">✔️ OK</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 🔮 Predicción -->
+  <div class="text-center">
+    <a href="{{ url_for('prediccion') }}" class="inline-block text-blue-600 hover:underline text-sm">📈 Ver predicción de demanda</a>
+  </div>
+
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('graficoStock');
+  const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: {{ nombres|tojson }},
+      datasets: [{
+        label: 'Cantidad actual',
+        data: {{ cantidades|tojson }},
+        backgroundColor: 'rgba(34,197,94,0.6)',
+        borderColor: 'rgba(22,163,74,1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+</script>
+
+{% endblock %}
+
+

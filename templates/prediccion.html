@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-4xl mx-auto py-10 px-4 animate-fade-in">
+  <!-- Título -->
+  <h2 class="text-3xl font-bold text-indigo-600 mb-6 text-center">📈 Predicción de Demanda</h2>
+  <p class="text-gray-600 text-center mb-8">
+    Estimación del consumo promedio diario de cada producto según los últimos 7 días.
+  </p>
+
+  <!-- Tabla -->
+  <div class="overflow-x-auto bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+    <table class="min-w-full table-auto text-sm text-left">
+      <thead>
+        <tr class="bg-indigo-50 text-indigo-700 uppercase text-xs tracking-wider">
+          <th class="px-4 py-3">🛒 Producto</th>
+          <th class="px-4 py-3">📊 Promedio diario de salidas</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in predicciones %}
+        <tr class="border-b hover:bg-gray-50 transition">
+          <td class="px-4 py-3 font-medium text-gray-800">{{ p.nombre }}</td>
+          <td class="px-4 py-3 text-gray-600">{{ p.promedio_diario }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Botón regresar -->
+  <div class="mt-8 text-center">
+    <a href="{{ url_for('dashboard') }}"
+       class="inline-block bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition">
+      ← Volver al Dashboard
+    </a>
+  </div>
+</div>
+
+<!-- Animación -->
+<style>
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+</style>
+{% endblock %}
+
+
+

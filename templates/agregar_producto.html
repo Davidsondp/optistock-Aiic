@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+  <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md animate-fade-in">
+
+    <!-- Título -->
+    <h2 class="text-2xl font-semibold text-indigo-600 text-center mb-6">
+      ➕ Agregar Nuevo Producto
+    </h2>
+
+    <!-- Mensaje de éxito si existe -->
+    {% if mensaje %}
+      <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4 text-sm">
+        {{ mensaje }}
+      </div>
+    {% endif %}
+
+    <!-- Formulario -->
+    <form action="/agregar" method="POST" class="space-y-5">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Nombre del producto</label>
+        <input
+          type="text"
+          name="nombre"
+          required
+          placeholder="Ej. Papel higiénico"
+          class="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        >
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
+        <input
+          type="number"
+          name="cantidad"
+          required
+          min="1"
+          placeholder="Ej. 20"
+          class="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        >
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-lg transition duration-300"
+      >
+        Guardar Producto
+      </button>
+    </form>
+
+    <!-- Volver -->
+    <div class="mt-6 text-center">
+      <a href="{{ url_for('dashboard') }}" class="text-sm text-gray-500 hover:text-indigo-600 transition">
+        ← Volver al panel
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Animación Fade-in -->
+<style>
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+</style>
+{% endblock %}
+
