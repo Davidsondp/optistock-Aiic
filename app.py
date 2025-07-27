@@ -28,7 +28,6 @@ def index():
 # Login de usuario
 # ---------------------------
 @app.route("/login", methods=["GET", "POST"])
-@login_required
 def login():
     if request.method == "POST":
         email = request.form["email"]
