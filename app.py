@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, User, Producto, Movimiento
 from datetime import datetime, timedelta
 from sqlalchemy.sql import func
+from auth import login_required
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "clave_segura_predeterminada")
@@ -20,6 +21,7 @@ db.init_app(app)
 # Ruta principal
 # ---------------------------
 @app.route("/")
+@login_required
 def index():
     return redirect(url_for("login"))
 
@@ -27,6 +29,7 @@ def index():
 # Login de usuario
 # ---------------------------
 @app.route("/login", methods=["GET", "POST"])
+@login_required
 def login():
     if request.method == "POST":
         email = request.form["email"]
@@ -101,6 +104,7 @@ def dashboard():
 # Agregar nuevo producto
 # ---------------------------
 @app.route("/agregar", methods=["GET", "POST"])
+@login_required
 def agregar_producto():
     if request.method == "POST":
         nombre = request.form["nombre"]
@@ -120,6 +124,7 @@ def agregar_producto():
 # Predicción de demanda
 # ---------------------------
 @app.route("/prediccion")
+@login_required
 def prediccion():
     hoy = datetime.utcnow()
     hace_7_dias = hoy - timedelta(days=7)
@@ -146,6 +151,7 @@ def prediccion():
 # Registro de movimientos
 # ---------------------------
 @app.route("/movimientos", methods=["GET", "POST"])
+@login_required
 def movimientos():
     productos = Producto.query.all()
 
