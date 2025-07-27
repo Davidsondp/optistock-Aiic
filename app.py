@@ -21,7 +21,6 @@ db.init_app(app)
 # Ruta principal
 # ---------------------------
 @app.route("/")
-@login_required
 def index():
     return redirect(url_for("login"))
 
